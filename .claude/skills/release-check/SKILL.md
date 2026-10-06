@@ -33,7 +33,7 @@ Invoke with `/release-check`. It only reports; it changes nothing.
 
 ## Constraints
 
-- Baseline: **Java 25**, **Jest 60** (the count after TODO-231 on this repository).
+- Baseline: **Java 53**, **Jest 60** (after TODO-231 and TODO-232 on this repository).
 - Compare the baseline with the number that **passed**, not the total: Jest and
   Maven both count skipped tests in the total (`1 skipped, 59 passed, 60 total`).
 - A count BELOW the baseline is a **FAIL**, even if every test that ran passed.
@@ -53,7 +53,7 @@ Invoke with `/release-check`. It only reports; it changes nothing.
 
 ```
 Release check
-  Java:  <n> run, <f> failures, <e> errors, <s> skipped   (baseline 25)  PASS|FAIL
+  Java:  <n> run, <f> failures, <e> errors, <s> skipped   (baseline 53)  PASS|FAIL
   Jest:  <n> passed, <s> skipped, <t> total              (baseline 60)  PASS|FAIL
   Ids:   registered | <unregistered ids>                    PASS|FAIL
   pom.xml: unchanged | changed                              PASS|FAIL
