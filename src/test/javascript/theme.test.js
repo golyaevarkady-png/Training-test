@@ -93,11 +93,12 @@ describe('theme through data-theme and CSS variables (AC-2)', () => {
     });
   });
 
-  test('the dark theme defines every variable the light theme defines', () => {
-    const light = new Set(variablesIn((s) => /:root|\[data-theme="light"\]/.test(s)));
+  test('the light and dark themes define the same variables', () => {
+    const light = new Set(variablesIn((s) => /\[data-theme="light"\]/.test(s)));
     const dark = new Set(variablesIn((s) => /\[data-theme="dark"\]/.test(s)));
     expect(light.size).toBeGreaterThan(0);
     expect([...light].filter((v) => !dark.has(v))).toEqual([]);
+    expect([...dark].filter((v) => !light.has(v))).toEqual([]);
   });
 
   test('app.js contains no colour values', () => {
@@ -123,6 +124,15 @@ describe('theme persistence (AC-3)', () => {
 });
 
 describe('default theme (AC-4)', () => {
+  test('the CSS fallback without a data-theme attribute is the dark theme', () => {
+    const root = cssBlocks().filter((b) => /:root/.test(b.selector));
+    expect(root.length).toBeGreaterThan(0);
+    root.forEach((b) => {
+      expect(b.selector).toMatch(/\[data-theme="dark"\]/);
+      expect(b.selector).not.toMatch(/\[data-theme="light"\]/);
+    });
+  });
+
   test('starts dark when nothing is stored, even if the OS prefers light', async () => {
     window.matchMedia = jest.fn((query) => ({
       matches: query.includes('light'),

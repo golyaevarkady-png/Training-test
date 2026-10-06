@@ -4,35 +4,8 @@
  * The theme is chosen by data-theme on <html>, set by app.js (TODO-231).
  */
 
+/* Dark is the default (TODO-231, AC-4), so it is also the fallback without data-theme. */
 :root,
-[data-theme="light"] {
-  color-scheme: light;
-  --bg: #f3f1ec;
-  --surface: #ffffff;
-  --surface-hover: #f8f6f1;
-  --text: #1f2a37;
-  --text-muted: #6b7280;
-  --text-label: #4b5563;
-  --heading: #4a2c19;
-  --border-strong: #d9d3c7;
-  --border: #e3ddd1;
-  --border-input: #c9c2b4;
-  --row-border: #ece7dd;
-  --primary: #4a2c19;
-  --primary-hover: #613a22;
-  --on-primary: #ffffff;
-  --preset-active-bg: #e8dfd2;
-  --preset-active-border: #a98467;
-  --error: #9f1239;
-  --bar: #2f6f73;
-  --bar-warn: #c2410c;
-  --bar-label: #374151;
-  --bar-value: #6b7280;
-  --due-border: #c2410c;
-  --due-bg: #fff4ec;
-  --due-text: #9a3412;
-}
-
 [data-theme="dark"] {
   color-scheme: dark;
   --bg: #15181d;
@@ -59,6 +32,34 @@
   --due-border: #f97316;
   --due-bg: #3a2418;
   --due-text: #fdba74;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f3f1ec;
+  --surface: #ffffff;
+  --surface-hover: #f8f6f1;
+  --text: #1f2a37;
+  --text-muted: #6b7280;
+  --text-label: #4b5563;
+  --heading: #4a2c19;
+  --border-strong: #d9d3c7;
+  --border: #e3ddd1;
+  --border-input: #c9c2b4;
+  --row-border: #ece7dd;
+  --primary: #4a2c19;
+  --primary-hover: #613a22;
+  --on-primary: #ffffff;
+  --preset-active-bg: #e8dfd2;
+  --preset-active-border: #a98467;
+  --error: #9f1239;
+  --bar: #2f6f73;
+  --bar-warn: #c2410c;
+  --bar-label: #374151;
+  --bar-value: #6b7280;
+  --due-border: #c2410c;
+  --due-bg: #fff4ec;
+  --due-text: #9a3412;
 }
 
 * {
