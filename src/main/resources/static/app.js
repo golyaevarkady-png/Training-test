@@ -13,6 +13,8 @@
   var DEFAULT_PRESET_DAYS = 30;
   var LATE_LIMIT = 20;
   var SVG_NS = 'http://www.w3.org/2000/svg';
+  var THEME_KEY = 'ops-theme';
+  var DEFAULT_THEME = 'dark';
 
   // ---------- API client ----------
 
@@ -109,6 +111,7 @@
 
     var els = {
       status: document.getElementById('status-line'),
+      themeToggle: document.getElementById('theme-toggle'),
       form: document.getElementById('range-form'),
       from: document.getElementById('range-from'),
       to: document.getElementById('range-to'),
@@ -126,6 +129,7 @@
     };
 
     var state = {
+      theme: DEFAULT_THEME,
       today: null,
       from: null,
       to: null,
@@ -169,6 +173,51 @@
 
     function setKpi(el, value) {
       el.querySelector('.kpi-value').textContent = value;
+    }
+
+    // ---------- Theme ----------
+
+    /*
+     * The theme is data-theme on <html>; every colour lives in style.css. With nothing
+     * valid stored the default is dark, whatever the OS prefers (TODO-231, AC-4).
+     */
+    function storage() {
+      try {
+        return document.defaultView && document.defaultView.localStorage;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function readTheme() {
+      var stored = null;
+      try {
+        stored = storage() ? storage().getItem(THEME_KEY) : null;
+      } catch (err) {
+        stored = null;
+      }
+      return stored === 'light' || stored === 'dark' ? stored : DEFAULT_THEME;
+    }
+
+    function applyTheme(theme) {
+      state.theme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      var next = theme === 'dark' ? 'Light' : 'Dark';
+      els.themeToggle.textContent = next + ' theme';
+      els.themeToggle.setAttribute('aria-label', 'Switch to the ' + next.toLowerCase() + ' theme');
+    }
+
+    function toggleTheme() {
+      var theme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(theme);
+      try {
+        if (storage()) {
+          storage().setItem(THEME_KEY, theme);
+        }
+      } catch (err) {
+        // Storage can be unavailable (private mode); the theme still applies for this visit.
+      }
+      return theme;
     }
 
     // ---------- Rendering ----------
@@ -345,6 +394,9 @@
       });
     });
 
+    applyTheme(readTheme());
+    els.themeToggle.addEventListener('click', toggleTheme);
+
     var ready = api.health().then(function (health) {
       state.today = health.today;
       var range = applyPreset(DEFAULT_PRESET_DAYS, state.today);
@@ -359,6 +411,7 @@
       state: state,
       load: load,
       selectPreset: selectPreset,
+      toggleTheme: toggleTheme,
       api: api
     };
   }
