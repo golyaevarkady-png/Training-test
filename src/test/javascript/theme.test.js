@@ -133,6 +133,16 @@ describe('default theme (AC-4)', () => {
     });
   });
 
+  // jsdom does not evaluate @media rules, so an OS-driven rule in the CSS or the page
+  // would slip past the matchMedia test below. Check the files themselves.
+  test('neither style.css nor index.html follows the OS colour scheme', () => {
+    const css = fs.readFileSync(CSS_PATH, 'utf8');
+    const html = fs.readFileSync(HTML_PATH, 'utf8');
+    expect(css).not.toMatch(/prefers-color-scheme/);
+    expect(html).not.toMatch(/prefers-color-scheme/);
+    expect(html).not.toMatch(/<meta[^>]+name="color-scheme"/);
+  });
+
   test('starts dark when nothing is stored, even if the OS prefers light', async () => {
     window.matchMedia = jest.fn((query) => ({
       matches: query.includes('light'),
